@@ -8,6 +8,17 @@ import { pageChanged } from '../actions/PaginationActions';
 import { FriendList, AddFriendForm, Pagination } from '../components';
 
 const PAGE_SIZE = 2;
+
+/**
+ * Get last possible page index
+ * @param {Number} totalItems 
+ * @param {Number} pageSize
+ * @returns {Number} page index
+ */
+const getLastPossiblePage = (totalItems, pageSize) => {
+  return Math.ceil(totalItems /  pageSize) - 1;
+}
+
 class FriendListApp extends Component {
 
   render () {
@@ -16,7 +27,7 @@ class FriendListApp extends Component {
       .slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE);
 
     if(isEmpty(paginatedFriendsList) && this.props.currentPage > 0) {
-      this.props.pageChanged(this.props.currentPage - 1);
+      this.props.pageChanged(getLastPossiblePage(friendsById.length, PAGE_SIZE));
     }
 
     const actions = {
