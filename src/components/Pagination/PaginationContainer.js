@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import Pagination from './Pagination';
 import { pageChanged } from '../../actions/PaginationActions';
-import { setUrlParam } from '../../libs/location';
 
 const calculatePagesCount = (totalItems, pageSize) => {
     return Math.ceil(totalItems /  pageSize);
@@ -45,8 +44,7 @@ class PaginationContainer extends Component {
    */
   onPageChange(pageIndex) {
     if (pageIndex >= 0 && this.state.pageCount >= pageIndex) {
-      setUrlParam('page', pageIndex + 1);
-      this.props.handlePageChange(pageIndex);
+      this.props.pageChanged(pageIndex);
     }
   }
 
@@ -84,8 +82,6 @@ const mapStateToProps = ({pagination}) => ({
     currentPage: pagination.currentPage
 });
 
-const mapDispatchToProps = dispatch => ({
-    handlePageChange: currentPage => dispatch(pageChanged(currentPage))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PaginationContainer)
+export default connect(mapStateToProps, {
+  pageChanged
+})(PaginationContainer)
